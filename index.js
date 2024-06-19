@@ -1,0 +1,40 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const PageData = require("./models/PageData");
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
+
+const mongoURI = "mongodb+srv://sarthanur:12345@googlesheetsdata.cu0yq9r.mongodb.net/";
+
+mongoose.connect(mongoURI)
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log(err));
+
+app.post("/submit", async (req, res) => {
+    try {
+        for (const page of req.body) {
+            const { page: pageNumber, inputs } = page;
+
+            let pageData = await PageData.findOne({ page: pageNumber });
+            if (pageData) {
+                pageData.inputs = inputs;
+                await pageData.save();
+            } else {
+                pageData = new PageData({ page: pageNumber, inputs });
+                await pageData.save();
+            }
+        }
+        res.status(200).send("Data saved successfully");
+    } catch (error) {
+        console.error("Error saving data:", error);
+        res.status(500).send("Error saving data");
+    }
+});
+
+const PORT =  5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
