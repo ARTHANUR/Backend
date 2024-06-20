@@ -36,5 +36,15 @@ app.post("/submit", async (req, res) => {
     }
 });
 
+app.get('/response', async (req, res) => {
+    try {
+        const data = await PageData.find(); 
+        res.status(200).json(data);
+    } catch (err) {
+        console.error('Error fetching response data:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 const PORT =  5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
