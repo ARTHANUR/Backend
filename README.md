@@ -17,7 +17,7 @@ This repository contains the backend code for handling form submissions from the
 3. Set up environment variables:
     - Create a `.env` file in the root directory and add your MongoDB connection string:
         ```
-        MONGODB_URI=your-mongodb-connection-string
+        MONGODB_URI=mongodb+srv://sarthanur:12345@googlesheetsdata.cu0yq9r.mongodb.net/
         ```
 4. Run the application:
     ```bash
